@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItaSoftware.Puzzles.Chat", "ItaSoftware.Puzzles.Chat\ItaSoftware.Puzzles.Chat.csproj", "{F81996A2-0E48-4516-B850-05674B03A672}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItaSoftware.Puzzles.Chat.Tests", "ItaSoftware.Puzzles.Chat.Tests\ItaSoftware.Puzzles.Chat.Tests.csproj", "{A534208D-D9C5-41F5-8DD5-71F1FABDA9AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F81996A2-0E48-4516-B850-05674B03A672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F81996A2-0E48-4516-B850-05674B03A672}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F81996A2-0E48-4516-B850-05674B03A672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A534208D-D9C5-41F5-8DD5-71F1FABDA9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A534208D-D9C5-41F5-8DD5-71F1FABDA9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A534208D-D9C5-41F5-8DD5-71F1FABDA9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A534208D-D9C5-41F5-8DD5-71F1FABDA9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
