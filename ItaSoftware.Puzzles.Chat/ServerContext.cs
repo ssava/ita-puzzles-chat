@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 namespace ItaSoftware.Puzzles.Chat.Tests
@@ -35,6 +35,11 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             {
                 Username = user
             });
+        }
+
+        internal void RemoveUser()
+        {
+            usersSet.Remove(usersSet.Last());
         }
     }
 }

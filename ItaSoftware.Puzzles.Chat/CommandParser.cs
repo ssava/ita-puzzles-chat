@@ -33,7 +33,6 @@ namespace ItaSoftware.Puzzles.Chat
             string result = string.Empty;
             string cmd_name = string.Empty;
             string[] cmd_args = new string[0];
-            bool hasInvalidArgsCount = false;
             bool hasContext = context != null;
 
             command = command.Replace(CRLF, string.Empty).Trim();
@@ -57,7 +56,7 @@ namespace ItaSoftware.Puzzles.Chat
                 cmd_args = cmd_args.Skip(1).ToArray();
 
             /* Handle each commands */
-            hasInvalidArgsCount = result.StartsWith("ERROR");
+            bool hasInvalidArgsCount = result.StartsWith("ERROR");
 
             switch (cmd_name)
             {
@@ -109,6 +108,12 @@ namespace ItaSoftware.Puzzles.Chat
                         result = "OK";
                     break;
                 case "LOGOUT":
+                    if(hasContext)
+                    {
+                        context.RemoveUser();
+                    }
+
+
                     result = "OK";
                     break;
             }

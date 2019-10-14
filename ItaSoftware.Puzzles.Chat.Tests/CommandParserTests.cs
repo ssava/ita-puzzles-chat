@@ -195,9 +195,10 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             CommandParser parser = new CommandParser();
 
             parser.Execute("LOGIN hello\r\n");
+            parser.Execute("LOGIN world\r\n");
             parser.Execute("LOGOUT\r\n", context);
 
-            Assert.AreEqual(0, context.ConnectedUsers);
+            Assert.AreEqual(1, context.ConnectedUsers);
         }
     }
 }
