@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ItaSoftware.Puzzles.Chat.Tests;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -27,12 +28,13 @@ namespace ItaSoftware.Puzzles.Chat
             { "LOGOUT", 0 }
         };
 
-        public string Execute(string command)
+        public string Execute(string command, ServerContext context = null)
         {
             string result = string.Empty;
             string cmd_name = string.Empty;
             string[] cmd_args = new string[0];
             bool hasInvalidArgsCount = false;
+            bool hasContext = context != null;
 
             command = command.Replace(CRLF, string.Empty).Trim();
             cmd_name = command.Split(' ')[0];
@@ -63,14 +65,26 @@ namespace ItaSoftware.Puzzles.Chat
                     if (hasInvalidArgsCount)
                         result = "ERROR Need to specify a username.";
                     else
+                    {
                         result = "OK";
+
+                        if (hasContext)
+                        {
+                            string username = cmd_args[0];
+
+                            if (!context.IsUserLoggedIn(username))
+                                context.AddUser(username);
+                            else
+                                result = "ERROR User already logged in.";
+                        }
+                    }
                     break;
 
                 case "JOIN":
                     if (hasInvalidArgsCount)
                         result = "ERROR You need to specify a room to join.";
                     else
-                    { 
+                    {
                         if (!cmd_args[0].StartsWith("#"))
                             result = "ERROR Invalid room name.";
                         else
@@ -87,6 +101,15 @@ namespace ItaSoftware.Puzzles.Chat
                         else
                             result = "OK";
                     }
+                    break;
+                case "MSG":
+                    if (hasInvalidArgsCount)
+                        result = "ERROR You need to specify a room/user and a message to send.";
+                    else
+                        result = "OK";
+                    break;
+                case "LOGOUT":
+                    result = "OK";
                     break;
             }
 
