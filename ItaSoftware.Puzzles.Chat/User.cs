@@ -2,9 +2,19 @@
 
 namespace ItaSoftware.Puzzles.Chat
 {
-    internal sealed class User : IComparable
+    public sealed class User : IComparable
     {
-        public string Username { get; set; }
+        public string Username { get; private set; }
+        public UserContext Context { get; private set; }
+
+        public User(string user)
+        {
+            Username = user;
+            Context = new UserContext
+            {
+                Owner = this
+            };
+        }
 
         public int CompareTo(object obj)
         {
