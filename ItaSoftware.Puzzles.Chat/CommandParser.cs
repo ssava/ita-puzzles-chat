@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ItaSoftware.Puzzles.Chat.Commands;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,12 +37,11 @@ namespace ItaSoftware.Puzzles.Chat
                 Data = null
             };
 
-            string cmd_name = string.Empty;
-            string[] cmd_args = new string[0];
+            _ = new string[0];
             bool hasContext = context != null;
 
             command = command.Replace(CRLF, string.Empty).Trim();
-            cmd_name = command.Split(' ')[0];
+            string cmd_name = command.Split(' ')[0];
 
             /* Check if a command is supported */
             if (!Commands.Keys.Contains(cmd_name))
@@ -53,7 +52,7 @@ namespace ItaSoftware.Puzzles.Chat
 
 
             /* Split whole command line */
-            cmd_args = command.Split(' ');
+            string[] cmd_args = command.Split(' ');
 
             /* Check for correct arguments */
             if ((cmd_args.Length - 1) < Commands[cmd_name].MinArgs)
@@ -65,80 +64,13 @@ namespace ItaSoftware.Puzzles.Chat
             bool hasInvalidArgsCount = result.Response.StartsWith("ERROR");
             bool hasUserContext = userCtx != null;
 
-            switch (cmd_name)
-            {
-                case "LOGIN":
-                    if (hasInvalidArgsCount)
-                        result.Response = "ERROR Need to specify a username.";
-                    else
-                    {
-                        result.Response = "OK";
+            /* Create command from input */
+            ICommand srvCommand = Command.Create(context, userCtx, cmd_name, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
 
-                        if (hasContext)
-                        {
-                            string username = cmd_args[0];
+            /* Execute command */
+            result = srvCommand.Handle();
 
-                            if (!context.IsUserLoggedIn(username))
-                            {
-                                User user = context.AddUser(username);
-
-                                if (hasUserContext)
-                                    userCtx.Owner = user;
-                            }
-                            else
-                                result.Response = "ERROR User already logged in.";
-                        }
-                    }
-                    break;
-
-                case "JOIN":
-                    if (hasInvalidArgsCount)
-                        result.Response = "ERROR You need to specify a room to join.";
-                    else
-                    {
-                        if (!cmd_args[0].StartsWith("#"))
-                            result.Response = "ERROR Invalid room name.";
-                        else
-                        {
-                            if (!hasContext && !hasUserContext)
-                                result.Response = "OK";
-                            else if (hasContext && !context.IsUserLoggedIn(userCtx))
-                                result.Response = "ERROR You must login first.";
-                            else if (!hasContext && hasUserContext)
-                                result.Response = "ERROR You must login first.";
-                            else
-                                result.Response = "OK";
-                        }
-                    }
-                    break;
-                case "PART":
-                    if (hasInvalidArgsCount)
-                        result.Response = "ERROR You need to specify a room to part.";
-                    else
-                    {
-                        if (!cmd_args[0].StartsWith("#"))
-                            result.Response = "ERROR Invalid room name.";
-                        else
-                            result.Response = "OK";
-                    }
-                    break;
-                case "MSG":
-                    if (hasInvalidArgsCount)
-                        result.Response = "ERROR You need to specify a room/user and a message to send.";
-                    else
-                        result.Response = "OK";
-                    break;
-                case "LOGOUT":
-                    if (hasContext && hasUserContext)
-                    {
-                        context.RemoveUser(userCtx);
-                    }
-
-
-                    result.Response = "OK";
-                    break;
-            }
-
+            /* Return command response */
             return result.Response;
         }
     }

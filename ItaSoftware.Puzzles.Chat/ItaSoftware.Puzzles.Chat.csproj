@@ -43,11 +43,18 @@
   <ItemGroup>
     <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandParser.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="IResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerContext.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserContext.cs" />
+    <Compile Include="Commands\UserLoginCommand.cs" />
+    <Compile Include="Commands\UserJoinCommand.cs" />
+    <Compile Include="Commands\UserPartCommand.cs" />
+    <Compile Include="Commands\UserLogoutCommand.cs" />
+    <Compile Include="Commands\UserMessageCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
