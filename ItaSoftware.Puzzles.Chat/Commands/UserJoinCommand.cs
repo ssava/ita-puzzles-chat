@@ -24,23 +24,25 @@
             IResult result = new Result();
 
             if (hasInvalidArgsCount)
-                result.Response = "ERROR You need to specify a room to join.";
-            else
             {
-                if (!cmd_args[0].StartsWith("#"))
-                    result.Response = "ERROR Invalid room name.";
-                else
-                {
-                    if (!hasContext && !hasUserContext)
-                        result.Response = "OK";
-                    else if (hasContext && !context.IsUserLoggedIn(userCtx))
-                        result.Response = "ERROR You must login first.";
-                    else if (!hasContext && hasUserContext)
-                        result.Response = "ERROR You must login first.";
-                    else
-                        result.Response = "OK";
-                }
+                result.Response = "ERROR You need to specify a room to join.";
+                return result;
             }
+
+            if (!cmd_args[0].StartsWith("#"))
+            {
+                result.Response = "ERROR Invalid room name.";
+                return result;
+            }
+
+            if (!hasContext && !hasUserContext)
+                result.Response = "OK";
+            else if (hasContext && !context.IsUserLoggedIn(userCtx))
+                result.Response = "ERROR You must login first.";
+            else if (!hasContext && hasUserContext)
+                result.Response = "ERROR You must login first.";
+            else
+                result.Response = "OK";
 
             return result;
         }

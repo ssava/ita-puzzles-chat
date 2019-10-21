@@ -50,7 +50,6 @@ namespace ItaSoftware.Puzzles.Chat
                 return result.Response;
             }
 
-
             /* Split whole command line */
             string[] cmd_args = command.Split(' ');
 

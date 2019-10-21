@@ -18,14 +18,18 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             IResult result = new Result();
 
             if (hasInvalidArgsCount)
-                result.Response = "ERROR You need to specify a room to part.";
-            else
             {
-                if (!cmd_args[0].StartsWith("#"))
-                    result.Response = "ERROR Invalid room name.";
-                else
-                    result.Response = "OK";
+                result.Response = "ERROR You need to specify a room to part.";
+                return result;
             }
+
+            if (!cmd_args[0].StartsWith("#"))
+            {
+                result.Response = "ERROR Invalid room name.";
+                return result;
+            }
+
+            result.Response = "OK";
 
             return result;
         }

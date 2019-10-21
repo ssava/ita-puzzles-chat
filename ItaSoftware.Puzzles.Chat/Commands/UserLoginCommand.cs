@@ -24,41 +24,41 @@
             IResult result = new Result();
 
             if (hasInvalidArgsCount)
-                result.Response = "ERROR Need to specify a username.";
-            else
             {
-                result.Response = "OK";
+                result.Response = "ERROR Need to specify a username.";
+                return result;
+            }
 
-                if (hasUserContext)
+            result.Response = "OK";
+
+            if (hasUserContext)
+            {
+                string username = cmd_args[0];
+
+                if (!context.IsUserLoggedIn(userCtx))
                 {
-                    string username = cmd_args[0];
+                    User user = context.AddUser(username);
 
-
-                    if (!context.IsUserLoggedIn(userCtx))
-                    {
-                        User user = context.AddUser(username);
-
-                        if (hasUserContext)
-                            userCtx.Owner = user;
-                    }
-                    else
-                        result.Response = "ERROR User already logged in.";
+                    if (hasUserContext)
+                        userCtx.Owner = user;
                 }
-                else if (hasContext)
+                else
+                    result.Response = "ERROR User already logged in.";
+            }
+            else if (hasContext)
+            {
+                string username = cmd_args[0];
+
+
+                if (!context.IsUserLoggedIn(username))
                 {
-                    string username = cmd_args[0];
+                    User user = context.AddUser(username);
 
-
-                    if (!context.IsUserLoggedIn(username))
-                    {
-                        User user = context.AddUser(username);
-
-                        if (hasUserContext)
-                            userCtx.Owner = user;
-                    }
-                    else
-                        result.Response = "ERROR User already logged in.";
+                    if (hasUserContext)
+                        userCtx.Owner = user;
                 }
+                else
+                    result.Response = "ERROR User already logged in.";
             }
 
             return result;

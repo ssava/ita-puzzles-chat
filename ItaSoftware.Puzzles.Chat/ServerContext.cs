@@ -75,6 +75,9 @@ namespace ItaSoftware.Puzzles.Chat
             if (ctx == null)
                 return null;
 
+            if (ctx.Owner == null)
+                return null;
+
             foreach (User user in loggedUsers)
             {
                 if (user.Username.Equals(ctx.Owner.Username))
