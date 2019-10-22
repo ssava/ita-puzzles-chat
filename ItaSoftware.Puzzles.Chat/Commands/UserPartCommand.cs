@@ -1,12 +1,7 @@
-﻿using ItaSoftware.Puzzles.Chat.Commands;
-
-namespace ItaSoftware.Puzzles.Chat.Commands
+﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
     internal class UserPartCommand : Command
     {
-        private readonly string[] cmd_args;
-        private readonly bool hasInvalidArgsCount;
-
         public UserPartCommand(string[] cmd_args, bool hasInvalidArgsCount)
         {
             this.cmd_args = cmd_args;

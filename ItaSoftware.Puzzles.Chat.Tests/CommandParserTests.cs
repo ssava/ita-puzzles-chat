@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace ItaSoftware.Puzzles.Chat.Tests
 {
@@ -183,6 +184,24 @@ namespace ItaSoftware.Puzzles.Chat.Tests
         }
 
         [TestMethod]
+        public void Server_set_correct_rooms_after_user_execute_JOIN_command()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+
+            parser.Execute("LOGIN alice\r\n", context, userContext);
+            parser.Execute("JOIN #meeting\r\n", context, userContext);
+            string output = parser.Execute("JOIN #meeting2\r\n", context, userContext);
+
+            string[] joined = userContext.JoinedRooms.ToArray();
+
+            Assert.AreEqual(2, userContext.JoinedRooms.Count);
+            Assert.AreEqual("#meeting", joined[0]);
+            Assert.AreEqual("#meeting2", joined[1]);
+        }
+
+        [TestMethod]
         public void Server_responds_OK_to_PART_command()
         {
             CommandParser parser = new CommandParser();
@@ -244,6 +263,19 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             string output = parser.Execute("MSG\r\n");
 
             Assert.AreEqual("ERROR You need to specify a room/user and a message to send.\r\n", output);
+        }
+
+        [TestMethod]
+        public void Server_responds_ERROR_to_MSG_command_to_not_logged_user()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+
+            parser.Execute("LOGIN alice\r\n", context, userContext);
+            string output = parser.Execute("MSG bob hello.\r\n", context, userContext);
+
+            Assert.AreEqual("ERROR User bob is currently not logged in.\r\n", output);
         }
 
 

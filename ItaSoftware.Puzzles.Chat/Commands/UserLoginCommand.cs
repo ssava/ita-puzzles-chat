@@ -2,13 +2,6 @@
 {
     internal class UserLoginCommand : Command
     {
-        private readonly ServerContext context;
-        private readonly UserContext userCtx;
-        private readonly string[] cmd_args;
-        private readonly bool hasContext;
-        private readonly bool hasInvalidArgsCount;
-        private readonly bool hasUserContext;
-
         public UserLoginCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasContext, bool hasInvalidArgsCount, bool hasUserContext)
         {
             this.context = context;

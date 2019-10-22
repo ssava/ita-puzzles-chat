@@ -2,6 +2,13 @@
 {
     public abstract class Command : ICommand
     {
+        protected ServerContext context;
+        protected UserContext userCtx;
+        protected string[] cmd_args;
+        protected bool hasContext;
+        protected bool hasInvalidArgsCount;
+        protected bool hasUserContext;
+
         public static ICommand Create(ServerContext context, UserContext userCtx, string cmd_name, string[] cmd_args, bool hasContext, bool hasInvalidArgsCount, bool hasUserContext)
         {
             ICommand srvCommand = null;
@@ -19,7 +26,7 @@
                     srvCommand = new UserPartCommand(cmd_args, hasInvalidArgsCount);
                     break;
                 case "MSG":
-                    srvCommand = new UserMessageCommand(hasInvalidArgsCount);
+                    srvCommand = new UserMessageCommand(context, userCtx, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
                     break;
                 case "LOGOUT":
                     srvCommand = new UserLogoutCommand(context, userCtx, hasContext, hasUserContext);

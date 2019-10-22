@@ -2,13 +2,6 @@
 {
     internal class UserJoinCommand : Command
     {
-        private readonly ServerContext context;
-        private readonly UserContext userCtx;
-        private readonly string[] cmd_args;
-        private readonly bool hasContext;
-        private readonly bool hasInvalidArgsCount;
-        private readonly bool hasUserContext;
-
         public UserJoinCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasContext, bool hasInvalidArgsCount, bool hasUserContext)
         {
             this.context = context;
@@ -42,7 +35,11 @@
             else if (!hasContext && hasUserContext)
                 result.Response = "ERROR You must login first.";
             else
+            {
+                userCtx.JoinedRooms.Add(cmd_args[0]);
                 result.Response = "OK";
+            }
+                
 
             return result;
         }

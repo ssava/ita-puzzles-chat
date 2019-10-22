@@ -1,14 +1,7 @@
-﻿using ItaSoftware.Puzzles.Chat.Commands;
-
-namespace ItaSoftware.Puzzles.Chat
+﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
     internal class UserLogoutCommand : Command
     {
-        private readonly ServerContext context;
-        private readonly UserContext userCtx;
-        private readonly bool hasContext;
-        private readonly bool hasUserContext;
-
         public UserLogoutCommand(ServerContext context, UserContext userCtx, bool hasContext, bool hasUserContext)
         {
             this.context = context;
