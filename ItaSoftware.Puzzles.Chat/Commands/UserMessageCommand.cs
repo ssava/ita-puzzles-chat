@@ -22,14 +22,35 @@
             {
                 string dest = cmd_args[0];
 
+                /* handle resp w/o context */
                 if (context == null)
+                {
                     result.Response = "OK";
-                else if(context.IsUserLoggedIn(dest))
-                    result.Response = "OK";
-                else
-                    result.Response = "ERROR User " + dest + " is currently not logged in.";
+                    return result;
+                }
+
+                bool isDstRoom = !string.IsNullOrEmpty(dest) && dest.StartsWith("#");
+
+                if (!isDstRoom)
+                {
+                    if (context.IsUserLoggedIn(dest))
+                        result.Response = "OK";
+                    else
+                        result.Response = "ERROR User " + dest + " is currently not logged in.";
+                }
+                else {
+                    if (!hasUserContext)
+                        result.Response = "OK";
+                    else
+                    {
+                        if (userCtx.JoinedRooms.Contains(dest))
+                            result.Response = "OK";
+                        else
+                            result.Response = "ERROR You haven't joined " + dest + " room.";
+                    }
+                }
             }
-                
+
 
             return result;
         }

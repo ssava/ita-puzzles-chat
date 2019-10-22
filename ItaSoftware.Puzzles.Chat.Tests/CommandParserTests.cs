@@ -248,6 +248,32 @@ namespace ItaSoftware.Puzzles.Chat.Tests
         }
 
         [TestMethod]
+        public void Server_responds_OK_to_MSG_command_with_user_context()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+            parser.Execute("LOGIN alice", context, userContext);
+            parser.Execute("JOIN #hello", context, userContext);
+            string output = parser.Execute("MSG #hello msg-hello\r\n", context, userContext);
+
+            Assert.AreEqual("OK\r\n", output);
+        }
+
+        [TestMethod]
+        public void Server_responds_ERROR_to_MSG_command_to_not_joined_room()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+            parser.Execute("LOGIN alice", context, userContext);
+            parser.Execute("JOIN #hello", context, userContext);
+            string output = parser.Execute("MSG #hello2 msg-hello\r\n", context, userContext);
+
+            Assert.AreEqual("ERROR You haven't joined #hello2 room.\r\n", output);
+        }
+
+        [TestMethod]
         public void Server_responds_ERROR_to_MSG_command_wo_message()
         {
             CommandParser parser = new CommandParser();
