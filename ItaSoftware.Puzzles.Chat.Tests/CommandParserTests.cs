@@ -237,6 +237,42 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             Assert.AreEqual("ERROR Invalid room name.\r\n", output);
         }
 
+        [TestMethod]
+        public void Server_responds_OK_to_PART_command_and_remove_from_joined_rooms()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+            parser.Execute("LOGIN alice\r\n", context, userContext);
+            parser.Execute("JOIN #hello\r\n", context, userContext);
+            parser.Execute("JOIN #hello2\r\n", context, userContext);
+            parser.Execute("PART #hello\r\n", context, userContext);
+
+            string[] rooms = userContext.JoinedRooms.ToArray();
+
+            Assert.AreEqual(1, rooms.Length);
+            Assert.AreEqual("#hello2", rooms[0]);
+        }
+
+        [TestMethod]
+        public void Server_responds_ERROR_to_PART_command_from_not_joined_room()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext userContext = new UserContext();
+            parser.Execute("LOGIN alice\r\n", context, userContext);
+            parser.Execute("JOIN #hello\r\n", context, userContext);
+            parser.Execute("JOIN #hello2\r\n", context, userContext);
+            string output = parser.Execute("PART #hello3\r\n", context, userContext);
+
+            string[] rooms = userContext.JoinedRooms.ToArray();
+
+            Assert.AreEqual("ERROR You haven't joined this room.\r\n", output);
+            Assert.AreEqual(2, rooms.Length);
+            Assert.AreEqual("#hello", rooms[0]);
+            Assert.AreEqual("#hello2", rooms[1]);
+        }
+
 
         [TestMethod]
         public void Server_responds_OK_to_MSG_command()

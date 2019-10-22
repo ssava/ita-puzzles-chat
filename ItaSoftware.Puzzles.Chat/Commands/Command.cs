@@ -23,7 +23,7 @@
                     srvCommand = new UserJoinCommand(context, userCtx, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
                     break;
                 case "PART":
-                    srvCommand = new UserPartCommand(cmd_args, hasInvalidArgsCount);
+                    srvCommand = new UserPartCommand(context, userCtx, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
                     break;
                 case "MSG":
                     srvCommand = new UserMessageCommand(context, userCtx, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
