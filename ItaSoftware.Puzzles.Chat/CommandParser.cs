@@ -27,8 +27,6 @@ namespace ItaSoftware.Puzzles.Chat
             { "LOGOUT", new CommandInfo(0, true) }
         };
 
-        //public string Execute<T>(string command, ServerContext context = null) where T : CommandResult
-
         public string Execute(string command, ServerContext context = null, UserContext userCtx = null)
         {
             IResult result = new Result
@@ -38,7 +36,6 @@ namespace ItaSoftware.Puzzles.Chat
             };
 
             _ = new string[0];
-            bool hasContext = context != null;
 
             command = command.Replace(CRLF, string.Empty).Trim();
             string cmd_name = command.Split(' ')[0];
@@ -61,10 +58,9 @@ namespace ItaSoftware.Puzzles.Chat
 
             /* Handle each commands */
             bool hasInvalidArgsCount = result.Response.StartsWith("ERROR");
-            bool hasUserContext = userCtx != null;
 
             /* Create command from input */
-            ICommand srvCommand = Command.Create(context, userCtx, cmd_name, cmd_args, hasContext, hasInvalidArgsCount, hasUserContext);
+            ICommand srvCommand = CommandFactory.Create(context, userCtx, cmd_name, cmd_args, hasInvalidArgsCount);
 
             /* Execute command */
             result = srvCommand.Handle();

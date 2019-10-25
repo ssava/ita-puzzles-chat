@@ -44,6 +44,7 @@
     <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="IResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

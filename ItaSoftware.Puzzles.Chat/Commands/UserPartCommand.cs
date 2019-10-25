@@ -2,14 +2,9 @@
 {
     internal class UserPartCommand : Command
     {
-        public UserPartCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasContext, bool hasInvalidArgsCount, bool hasUserContext)
+        public UserPartCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+            : base(context, userCtx, cmd_args, hasInvalidArgsCount)
         {
-            this.context = context;
-            this.userCtx = userCtx;
-            this.cmd_args = cmd_args;
-            this.hasContext = hasContext;
-            this.hasInvalidArgsCount = hasInvalidArgsCount;
-            this.hasUserContext = hasUserContext;
         }
 
         public override IResult Handle()

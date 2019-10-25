@@ -2,12 +2,9 @@
 {
     internal class UserLogoutCommand : Command
     {
-        public UserLogoutCommand(ServerContext context, UserContext userCtx, bool hasContext, bool hasUserContext)
+        public UserLogoutCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+            : base(context, userCtx, cmd_args, hasInvalidArgsCount)
         {
-            this.context = context;
-            this.userCtx = userCtx;
-            this.hasContext = hasContext;
-            this.hasUserContext = hasUserContext;
         }
 
         public override IResult Handle()
