@@ -11,6 +11,8 @@
 
         protected Command(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
         {
+            this.context = context;
+            this.userCtx = userCtx;
             this.hasContext = context != null;
             this.hasUserContext = userCtx != null;
             this.cmd_args = cmd_args;
