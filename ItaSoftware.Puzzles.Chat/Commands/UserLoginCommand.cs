@@ -19,7 +19,7 @@
 
             result.Response = "OK";
 
-            if (hasUserContext)
+            if (HasUserContext)
             {
                 string username = cmd_args[0];
 
@@ -27,13 +27,13 @@
                 {
                     User user = context.AddUser(username);
 
-                    if (hasUserContext)
+                    if (HasUserContext)
                         userCtx.Owner = user;
                 }
                 else
                     result.Response = "ERROR User already logged in.";
             }
-            else if (hasContext)
+            else if (HasContext)
             {
                 string username = cmd_args[0];
 
@@ -42,7 +42,7 @@
                 {
                     User user = context.AddUser(username);
 
-                    if (hasUserContext)
+                    if (HasUserContext)
                         userCtx.Owner = user;
                 }
                 else

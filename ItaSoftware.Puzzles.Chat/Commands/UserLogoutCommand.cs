@@ -11,7 +11,7 @@
         {
             IResult result = new Result();
 
-            if (hasContext && hasUserContext)
+            if (HasContext && HasUserContext)
             {
                 context.RemoveUser(userCtx);
             }

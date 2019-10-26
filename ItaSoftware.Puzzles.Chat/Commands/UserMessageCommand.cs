@@ -34,7 +34,7 @@
                         result.Response = "ERROR User " + dest + " is currently not logged in.";
                 }
                 else {
-                    if (!hasUserContext)
+                    if (!HasUserContext)
                         result.Response = "OK";
                     else
                     {

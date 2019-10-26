@@ -35,6 +35,7 @@ namespace ItaSoftware.Puzzles.Chat
                 Data = null
             };
 
+            bool hasInvalidArgsCount = false;
             _ = new string[0];
 
             command = command.Replace(CRLF, string.Empty).Trim();
@@ -52,12 +53,14 @@ namespace ItaSoftware.Puzzles.Chat
 
             /* Check for correct arguments */
             if ((cmd_args.Length - 1) < Commands[cmd_name].MinArgs)
+            {
                 result.Response = "ERROR Invalid arguments number.";
+                hasInvalidArgsCount = true;
+            }
             else
+            {
                 cmd_args = cmd_args.Skip(1).ToArray();
-
-            /* Handle each commands */
-            bool hasInvalidArgsCount = result.Response.StartsWith("ERROR");
+            }
 
             /* Create command from input */
             ICommand srvCommand = CommandFactory.Create(context, userCtx, cmd_name, cmd_args, hasInvalidArgsCount);

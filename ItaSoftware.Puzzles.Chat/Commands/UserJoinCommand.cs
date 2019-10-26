@@ -23,11 +23,11 @@
                 return result;
             }
 
-            if (!hasContext && !hasUserContext)
+            if (!HasContext && !HasUserContext)
                 result.Response = "OK";
-            else if (hasContext && !context.IsUserLoggedIn(userCtx))
+            else if (HasContext && !context.IsUserLoggedIn(userCtx))
                 result.Response = "ERROR You must login first.";
-            else if (!hasContext && hasUserContext)
+            else if (!HasContext && HasUserContext)
                 result.Response = "ERROR You must login first.";
             else
             {

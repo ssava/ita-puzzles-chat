@@ -26,7 +26,7 @@
 
             room_name = cmd_args[0];
 
-            if (hasContext && hasUserContext)
+            if (HasContext && HasUserContext)
             {
                 if(!userCtx.JoinedRooms.Contains(room_name))
                 {
