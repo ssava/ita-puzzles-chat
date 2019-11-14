@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -58,6 +59,31 @@ namespace ItaSoftware.Puzzles.Chat
             loggedUsers.Remove(new User(user));
 
             return true;
+        }
+
+        internal void SendMessage(string dstUser, string msg)
+        {
+            if (string.IsNullOrEmpty(dstUser))
+                return;
+
+            if (string.IsNullOrEmpty(msg))
+                return;
+
+            UserContext dstCtx = FindContextByName(dstUser);
+
+            if (dstCtx == null)
+                return;
+
+            dstCtx.Messages.Enqueue(string.Format("GOTROOMMSG {0} {1}", dstUser, msg));
+        }
+
+        private UserContext FindContextByName(string dstUser)
+        {
+            foreach (User u in loggedUsers)
+                if (u.Username.Equals(dstUser))
+                    return u.Context;
+
+            return null;
         }
 
         internal bool RemoveUser(UserContext ctx)

@@ -340,6 +340,24 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             Assert.AreEqual("ERROR User bob is currently not logged in.\r\n", output);
         }
 
+        [TestMethod]
+        public void Server_sends_a_message_between_two_users()
+        {
+            CommandParser parser = new CommandParser();
+            ServerContext context = ServerContext.Create();
+            UserContext aliceCtx = new UserContext();
+            UserContext bobCtx = new UserContext();
+
+            parser.Execute("LOGIN alice", context, aliceCtx);
+            parser.Execute("LOGIN bob", context, bobCtx);
+
+            string output = parser.Execute("MSG bob hello, bob.\r\n", context, aliceCtx);
+
+            Assert.AreEqual("OK\r\n", output);
+            Assert.AreEqual(1, bobCtx.Messages);
+            Assert.AreEqual("GOTUSERMSG alice hello, bob", bobCtx.Messages.Peek());
+        }
+
 
         [TestMethod]
         public void Server_responds_OK_to_LOGOUT_command()

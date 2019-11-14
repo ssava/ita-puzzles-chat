@@ -36,6 +36,8 @@
 
     public sealed class Result : IResult
     {
+        public static Result Default = new Result();
+
         private string _resp;
 
         public string Response
@@ -53,6 +55,23 @@
             }
         }
         public object Data { get; set; }
+
+        public Result()
+        {
+            Response = string.Empty;
+            Data = null;
+        }
+
+        public Result(string rsp) : this()
+        {
+            Response = rsp;
+        }
+
+        public Result(string rsp, object data) : this(rsp)
+        {
+            Response = rsp;
+            Data = data;
+        }
     }
 
     public abstract class CommandResult

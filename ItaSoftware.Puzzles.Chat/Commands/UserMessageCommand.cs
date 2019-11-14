@@ -18,7 +18,7 @@
                 string dest = cmd_args[0];
 
                 /* handle resp w/o context */
-                if (context == null)
+                if (!HasContext)
                 {
                     result.Response = "OK";
                     return result;
@@ -29,7 +29,10 @@
                 if (!isDstRoom)
                 {
                     if (context.IsUserLoggedIn(dest))
+                    {
                         result.Response = "OK";
+                        context.SendMessage(cmd_args[0], cmd_args[1]);
+                    }
                     else
                         result.Response = "ERROR User " + dest + " is currently not logged in.";
                 }

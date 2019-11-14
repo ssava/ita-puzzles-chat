@@ -8,9 +8,12 @@ namespace ItaSoftware.Puzzles.Chat
         public User Owner { get; set; }
         public ISet<string> JoinedRooms { get; private set; }
 
+        public Queue<string> Messages { get; private set; }
+
         public UserContext()
         {
             JoinedRooms = new SortedSet<string>();
+            Messages = new Queue<string>();
         }
 
         public int CompareTo(object obj)
