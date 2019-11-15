@@ -1,6 +1,5 @@
 ﻿using ItaSoftware.Puzzles.Chat.Commands;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -24,12 +23,21 @@ namespace ItaSoftware.Puzzles.Chat
             command = command.Replace(CRLF, string.Empty).Trim();
             string cmd_name = command.Split(' ')[0];
 
-            IResult result = Result.Default;
+            IResult result;
 
             try
             {
+                //context, userCtx, cmd_name, command
+                ICommandArgs req = new CommandArgs
+                {
+                    Context = context,
+                    UserContext = userCtx,
+                    CommandName = cmd_name,
+                    FullCommand = command
+                };
+
                 /* Create command from input */
-                ICommand srvCommand = CommandFactory.Create(context, userCtx, cmd_name, command);
+                ICommand srvCommand = CommandFactory.Create(req);
 
                 /* Execute command */
                 result = srvCommand.Handle();

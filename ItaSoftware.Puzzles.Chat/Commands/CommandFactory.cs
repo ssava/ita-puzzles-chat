@@ -16,36 +16,36 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             { "LOGOUT", new CommandInfo(0, true) }
         };
 
-        public static ICommand Create(ServerContext context, UserContext userCtx, string cmd_name, string command)
+        public static ICommand Create(ICommandArgs args)
         {
             bool hasInvalidArgsCount = false;
 
             /* Check if a command is supported */
-            if (!Commands.Keys.Contains(cmd_name))
+            if (!Commands.Keys.Contains(args.CommandName))
                 throw new CommandParseException(new Result("ERROR Unsupported command"));
 
 
             /* Split whole command line */
-            string[] cmd_args = command.Split(' ');
+            string[] cmd_args = args.FullCommand.Split(' ');
 
             /* Check for correct arguments */
-            if ((cmd_args.Length - 1) < Commands[cmd_name].MinArgs)
+            if ((cmd_args.Length - 1) < Commands[args.CommandName].MinArgs)
                 hasInvalidArgsCount = true;
             else
                 cmd_args = cmd_args.Skip(1).ToArray();
 
-            switch (cmd_name)
+            switch (args.CommandName)
             {
                 case "LOGIN":
-                    return new UserLoginCommand(context, userCtx, cmd_args, hasInvalidArgsCount);
+                    return new UserLoginCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
                 case "JOIN":
-                    return new UserJoinCommand(context, userCtx, cmd_args, hasInvalidArgsCount);
+                    return new UserJoinCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
                 case "PART":
-                    return new UserPartCommand(context, userCtx, cmd_args, hasInvalidArgsCount);
+                    return new UserPartCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
                 case "MSG":
-                    return new UserMessageCommand(context, userCtx, cmd_args, hasInvalidArgsCount);
+                    return new UserMessageCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
                 case "LOGOUT":
-                    return new UserLogoutCommand(context, userCtx, cmd_args, hasInvalidArgsCount);
+                    return new UserLogoutCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
             }
 
             return null;
