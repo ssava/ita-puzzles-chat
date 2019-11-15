@@ -16,6 +16,16 @@ namespace ItaSoftware.Puzzles.Chat.Tests
         }
 
         [TestMethod]
+        public void Server_responds_ERROR_to_invalid_arguments()
+        {
+            CommandParser parser = new CommandParser();
+
+            string output = parser.Execute(null);
+
+            Assert.AreEqual("ERROR Unsupported command\r\n", output);
+        }
+
+        [TestMethod]
         public void ERROR_doesnt_alter_state()
         {
             ServerContext context = ServerContext.Create(); /* Create new server context */

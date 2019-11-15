@@ -25,10 +25,10 @@
             }
             set
             {
-                if (value.EndsWith(CommandParser.CRLF))
+                if (value.EndsWith(CommandArgs.CRLF))
                     _resp = value;
                 else
-                    _resp = string.Format("{0}{1}", value, CommandParser.CRLF);
+                    _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
             }
         }
         public T Data { get; set; }
@@ -48,10 +48,10 @@
             }
             set
             {
-                if (value.EndsWith(CommandParser.CRLF))
+                if (value.EndsWith(CommandArgs.CRLF))
                     _resp = value;
                 else
-                    _resp = string.Format("{0}{1}", value, CommandParser.CRLF);
+                    _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
             }
         }
         public object Data { get; set; }

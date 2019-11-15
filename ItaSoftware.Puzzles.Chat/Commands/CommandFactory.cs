@@ -19,9 +19,14 @@ namespace ItaSoftware.Puzzles.Chat.Commands
         public static ICommand Create(ICommandArgs args)
         {
             bool hasInvalidArgsCount = false;
+            string cmd_name = string.Empty;
+
+            /* Retrieve command name */
+            if (args != null)
+                cmd_name = args.FullCommand.Split(' ')[0];
 
             /* Check if a command is supported */
-            if (!Commands.Keys.Contains(args.CommandName))
+            if (!Commands.Keys.Contains(cmd_name))
                 throw new CommandParseException(new Result("ERROR Unsupported command"));
 
 
@@ -29,12 +34,12 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             string[] cmd_args = args.FullCommand.Split(' ');
 
             /* Check for correct arguments */
-            if ((cmd_args.Length - 1) < Commands[args.CommandName].MinArgs)
+            if ((cmd_args.Length - 1) < Commands[cmd_name].MinArgs)
                 hasInvalidArgsCount = true;
             else
                 cmd_args = cmd_args.Skip(1).ToArray();
 
-            switch (args.CommandName)
+            switch (cmd_name)
             {
                 case "LOGIN":
                     return new UserLoginCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
