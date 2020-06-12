@@ -53,7 +53,7 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             if (commandInfo == null)
                 return true;
 
-            return (cmd_args.Length - 1) < commandInfo.MinArgs;
+            return (cmd_args.Length - 1) >= commandInfo.MinArgs;
         }
 
         internal Type GetBoundType(string cmdName)
@@ -61,7 +61,7 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             return IsBound(cmdName) ? _map[cmdName] : null;
         }
 
-        internal ICommand Build(string cmdName, ServerContext context, UserContext userContext, string[] cmd_args, bool hasInvalidArgsCount)
+        internal ICommand Build(string cmdName, params object[] args)
         {
             Type cmdType = GetBoundType(cmdName);
 
@@ -69,7 +69,7 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             if (cmdType == null)
                 return null;
 
-            var command = Activator.CreateInstance(cmdType) as ICommand;
+            var command = Activator.CreateInstance(cmdType, args) as ICommand;
 
             return command;
         }

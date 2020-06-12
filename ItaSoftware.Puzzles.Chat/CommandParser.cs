@@ -5,13 +5,13 @@ namespace ItaSoftware.Puzzles.Chat
 {
     public class CommandParser
     {
-        public static IDictionary<string, CommandInfo> ServMsg = new Dictionary<string, CommandInfo>
-        {
-            { "OK", new CommandInfo(0, false) },
-            { "ERROR", new CommandInfo(1, false) },
-            { "GOTUSERMSG", new CommandInfo(2, true) },
-            { "GOTROOMMSG", new CommandInfo(3, true) }
-        };
+        //public static IDictionary<string, CommandInfo> ServMsg = new Dictionary<string, CommandInfo>
+        //{
+        //    { "OK", new CommandInfo(0, false) },
+        //    { "ERROR", new CommandInfo(1, false) },
+        //    { "GOTUSERMSG", new CommandInfo(2, true) },
+        //    { "GOTROOMMSG", new CommandInfo(3, true) }
+        //};
 
         public string Execute(string command, ServerContext context = null, UserContext userCtx = null)
         {
