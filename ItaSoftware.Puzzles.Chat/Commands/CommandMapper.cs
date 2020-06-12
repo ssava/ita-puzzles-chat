@@ -66,10 +66,10 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             Type cmdType = GetBoundType(cmdName);
 
             /* No type is bound for given command name */
-            if (cmdName == null)
+            if (cmdType == null)
                 return null;
 
-            var command = (cmdType) Activator.CreateInstance(cmdType);
+            var command = Activator.CreateInstance(cmdType) as ICommand;
 
             return command;
         }
