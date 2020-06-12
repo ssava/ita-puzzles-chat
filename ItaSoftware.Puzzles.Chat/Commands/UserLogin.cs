@@ -10,47 +10,33 @@
 
         public override IResult Handle()
         {
-            IResult result = new Result();
-
             if (hasInvalidArgsCount)
-            {
-                result.Response = "ERROR Need to specify a username.";
-                return result;
-            }
+                return Error("Need to specify a username.");
 
-            result.Response = "OK";
+            string username = cmd_args[0];
 
             if (HasUserContext)
             {
-                string username = cmd_args[0];
+                if (context.IsUserLoggedIn(userCtx))
+                    return Error("User already logged in.");
+                
+                User user = context.AddUser(username);
 
-                if (!context.IsUserLoggedIn(userCtx))
-                {
-                    User user = context.AddUser(username);
-
-                    if (HasUserContext)
-                        userCtx.Owner = user;
-                }
-                else
-                    result.Response = "ERROR User already logged in.";
+                if (HasUserContext)
+                    userCtx.Owner = user;    
             }
             else if (HasContext)
             {
-                string username = cmd_args[0];
+                if (context.IsUserLoggedIn(username))
+                    return Error("User already logged in.");
+                
+                User user = context.AddUser(username);
 
-
-                if (!context.IsUserLoggedIn(username))
-                {
-                    User user = context.AddUser(username);
-
-                    if (HasUserContext)
-                        userCtx.Owner = user;
-                }
-                else
-                    result.Response = "ERROR User already logged in.";
+                if (HasUserContext)
+                    userCtx.Owner = user;
             }
 
-            return result;
+            return Ok();
         }
     }
 }

@@ -10,34 +10,25 @@
 
         public override IResult Handle()
         {
-            IResult result = new Result();
-
             if (hasInvalidArgsCount)
-            {
-                result.Response = "ERROR You need to specify a room to join.";
-                return result;
-            }
+                return Error("You need to specify a room to join.");
 
             if (!cmd_args[0].StartsWith("#"))
-            {
-                result.Response = "ERROR Invalid room name.";
-                return result;
-            }
+                return Error("Invalid room name.");
 
             if (!HasContext && !HasUserContext)
-                result.Response = "OK";
+                return Ok();
+
             else if (HasContext && !context.IsUserLoggedIn(userCtx))
-                result.Response = "ERROR You must login first.";
+                return Error("You must login first.");
+
             else if (!HasContext && HasUserContext)
-                result.Response = "ERROR You must login first.";
+                return Error("You must login first.");
             else
             {
                 userCtx.JoinedRooms.Add(cmd_args[0]);
-                result.Response = "OK";
+                return Ok();
             }
-                
-
-            return result;
         }
     }
 }

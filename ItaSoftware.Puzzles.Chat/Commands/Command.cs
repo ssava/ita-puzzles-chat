@@ -19,5 +19,21 @@
         }
 
         public abstract IResult Handle();
+
+        public virtual IResult Ok()
+        {
+            return new Result
+            {
+                Response = "OK"
+            };
+        }
+
+        public virtual IResult Error(string reason)
+        {
+            return new Result
+            {
+                Response = $"ERROR {reason}"
+            };
+        }
     }
 }

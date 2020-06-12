@@ -10,40 +10,25 @@
 
         public override IResult Handle()
         {
-            IResult result = new Result();
             string room_name = string.Empty;
 
             if (hasInvalidArgsCount)
-            {
-                result.Response = "ERROR You need to specify a room to part.";
-                return result;
-            }
-
-            if (!cmd_args[0].StartsWith("#"))
-            {
-                result.Response = "ERROR Invalid room name.";
-                return result;
-            }
+                return Error("You need to specify a room to part.");
 
             room_name = cmd_args[0];
 
-            if (HasContext && HasUserContext)
-            {
-                if(!userCtx.JoinedRooms.Contains(room_name))
-                {
-                    result.Response = "ERROR You haven't joined this room.";
-                } else
-                {
-                    
-                    userCtx.JoinedRooms.Remove(room_name);
-                    result.Response = "OK";
-                }
-            } else
-            {
-                result.Response = "OK";
-            }
+            if (!cmd_args[0].StartsWith("#"))
+                return Error("Invalid room name.");
 
-            return result;
+            if (!HasContext || !HasUserContext)
+                return Ok();
+            
+            if(!userCtx.JoinedRooms.Contains(room_name))
+                return Error("You haven't joined this room.");
+                                    
+            userCtx.JoinedRooms.Remove(room_name);
+
+            return Ok();
         }
     }
 }

@@ -10,17 +10,12 @@
 
         public override IResult Handle()
         {
-            IResult result = new Result();
-
             if (HasContext && HasUserContext)
             {
                 context.RemoveUser(userCtx);
             }
 
-
-            result.Response = "OK";
-
-            return result;
+            return Ok();
         }
     }
 }

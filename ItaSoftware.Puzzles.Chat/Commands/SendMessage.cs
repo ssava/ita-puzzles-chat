@@ -10,48 +10,35 @@
 
         public override IResult Handle()
         {
-            IResult result = new Result();
-
             if (hasInvalidArgsCount)
-                result.Response = "ERROR You need to specify a room/user and a message to send.";
-            else
+                return Error("You need to specify a room/user and a message to send.");
+
+
+            string dest = cmd_args[0];
+
+            /* handle resp w/o context */
+            if (!HasContext)
+                return Ok();
+
+            bool isDstRoom = !string.IsNullOrEmpty(dest) && dest.StartsWith("#");
+
+            if (!isDstRoom)
             {
-                string dest = cmd_args[0];
+                if (!context.IsUserLoggedIn(dest))
+                    return Error($"User {dest} is currently not logged in.");
 
-                /* handle resp w/o context */
-                if (!HasContext)
-                {
-                    result.Response = "OK";
-                    return result;
-                }
-
-                bool isDstRoom = !string.IsNullOrEmpty(dest) && dest.StartsWith("#");
-
-                if (!isDstRoom)
-                {
-                    if (context.IsUserLoggedIn(dest))
-                    {
-                        result.Response = "OK";
-                        context.SendMessage(cmd_args[0], cmd_args[1]);
-                    }
-                    else
-                        result.Response = "ERROR User " + dest + " is currently not logged in.";
-                }
-                else {
-                    if (!HasUserContext)
-                        result.Response = "OK";
-                    else
-                    {
-                        if (userCtx.JoinedRooms.Contains(dest))
-                            result.Response = "OK";
-                        else
-                            result.Response = "ERROR You haven't joined " + dest + " room.";
-                    }
-                }
+                context.SendMessage(cmd_args[0], cmd_args[1]);
+                return Ok();
             }
+            else {
+                if (!HasUserContext)
+                    return Ok();
 
-
-            return result;
+                if (userCtx.JoinedRooms.Contains(dest))
+                    return Ok();
+                    
+                return Error($"You haven't joined {dest} room.");
+            }
         }
 
     }
