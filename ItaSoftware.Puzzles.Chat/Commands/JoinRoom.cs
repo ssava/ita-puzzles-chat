@@ -1,8 +1,9 @@
 ﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
-    internal class UserJoinCommand : Command
+    [CommandInfo(minArgs: 1, isLoginRequired: true)]
+    internal class JoinRoom : Command
     {
-        public UserJoinCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+        public JoinRoom(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
             : base(context, userCtx, cmd_args, hasInvalidArgsCount)
         {
         }

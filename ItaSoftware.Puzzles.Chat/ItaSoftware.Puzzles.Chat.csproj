@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -42,11 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandInfo.cs" />
+    <Compile Include="CommandInfoAttribute.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandArgs.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
+    <Compile Include="Commands\CommandMapper.cs" />
     <Compile Include="Exceptions\CommandParseException.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="IResult.cs" />
@@ -54,11 +55,11 @@
     <Compile Include="ServerContext.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserContext.cs" />
-    <Compile Include="Commands\UserLoginCommand.cs" />
-    <Compile Include="Commands\UserJoinCommand.cs" />
-    <Compile Include="Commands\UserPartCommand.cs" />
-    <Compile Include="Commands\UserLogoutCommand.cs" />
-    <Compile Include="Commands\UserMessageCommand.cs" />
+    <Compile Include="Commands\UserLogin.cs" />
+    <Compile Include="Commands\JoinRoom.cs" />
+    <Compile Include="Commands\LeaveRoom.cs" />
+    <Compile Include="Commands\UserLogout.cs" />
+    <Compile Include="Commands\SendMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

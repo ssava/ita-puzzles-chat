@@ -1,8 +1,9 @@
 ﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
-    internal class UserPartCommand : Command
+    [CommandInfo(minArgs: 1, isLoginRequired: true)]
+    internal class LeaveRoom : Command
     {
-        public UserPartCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+        public LeaveRoom(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
             : base(context, userCtx, cmd_args, hasInvalidArgsCount)
         {
         }

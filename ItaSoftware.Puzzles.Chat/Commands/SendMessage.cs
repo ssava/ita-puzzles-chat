@@ -1,8 +1,9 @@
 ﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
-    internal class UserMessageCommand : Command
+    [CommandInfo(minArgs: 2, isLoginRequired: true)]
+    internal class SendMessage : Command
     {
-        public UserMessageCommand(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+        public SendMessage(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
             : base(context, userCtx, cmd_args, hasInvalidArgsCount)
         {
         }
