@@ -11,17 +11,21 @@
         public override IResult Handle()
         {
             if (hasInvalidArgsCount)
+            {
                 return Error("You need to specify a room/user and a message to send.");
-
+            }
 
             string dest = cmd_args[0];
 
             /* handle resp w/o context */
             if (!HasContext)
+            {
                 return Ok();
+            }
 
             bool isDstRoom = !string.IsNullOrEmpty(dest) && dest.StartsWith("#");
 
+            /* Send message to user */
             if (!isDstRoom)
             {
                 if (!context.IsUserLoggedIn(dest))
@@ -30,15 +34,19 @@
                 context.SendMessage(cmd_args[0], cmd_args[1]);
                 return Ok();
             }
-            else {
-                if (!HasUserContext)
-                    return Ok();
 
-                if (userCtx.JoinedRooms.Contains(dest))
-                    return Ok();
-                    
-                return Error($"You haven't joined {dest} room.");
+            /* Else send message to room */
+            if (!HasUserContext)
+            {
+                return Ok();
             }
+
+            if (userCtx.JoinedRooms.Contains(dest))
+            {
+                return Ok();
+            }
+
+            return Error($"You haven't joined {dest} room.");
         }
 
     }

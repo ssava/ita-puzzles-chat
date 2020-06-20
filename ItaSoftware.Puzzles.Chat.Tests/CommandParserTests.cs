@@ -357,12 +357,15 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             ServerContext context = ServerContext.Create();
             UserContext aliceCtx = new UserContext();
             UserContext bobCtx = new UserContext();
+            string output = string.Empty;
 
-            parser.Execute("LOGIN alice", context, aliceCtx);
-            parser.Execute("LOGIN bob", context, bobCtx);
+            output = parser.Execute("LOGIN alice", context, aliceCtx);
+            Assert.AreEqual("OK\r\n", output);
 
-            string output = parser.Execute("MSG bob hello, bob.\r\n", context, aliceCtx);
+            output = parser.Execute("LOGIN bob", context, bobCtx);
+            Assert.AreEqual("OK\r\n", output);
 
+            output = parser.Execute("MSG bob hello, bob.\r\n", context, aliceCtx);
             Assert.AreEqual("OK\r\n", output);
             Assert.AreEqual(1, bobCtx.Messages);
             Assert.AreEqual("GOTUSERMSG alice hello, bob", bobCtx.Messages.Peek());

@@ -26,22 +26,35 @@ namespace ItaSoftware.Puzzles.Chat.Commands
             bool hasInvalidArgsCount = false;
             string cmdName = string.Empty;
 
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
+
             /* Retrieve command name */
             if (args != null)
+            {
                 cmdName = args.FullCommand.Split(' ')[0];
+            }
 
             /* Check if a command is supported */
             if (!Commands.IsBound(cmdName))
+            {
                 throw new CommandParseException(new Result("ERROR Unsupported command"));
+            }
 
             /* Split whole command line */
             string[] cmd_args = args.FullCommand.Split(' ');
 
             /* Check for correct arguments */
             if (!Commands.AreArgumentsValid(cmdName, cmd_args))
+            {
                 hasInvalidArgsCount = true;
+            }
             else
+            {
                 cmd_args = cmd_args.Skip(1).ToArray();
+            }
 
             return Commands.Build(cmdName, args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
         }

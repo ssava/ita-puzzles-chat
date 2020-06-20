@@ -15,9 +15,13 @@ namespace ItaSoftware.Puzzles.Chat.Commands
         public void Bind<TCommand>(string cmdName) where TCommand : ICommand
         {
             if (_map.ContainsKey(cmdName))
+            {
                 _map[cmdName] = typeof(TCommand);
+            }
             else
+            {
                 _map.Add(cmdName, typeof(TCommand));
+            }
         }
 
         /// <summary>
@@ -26,10 +30,7 @@ namespace ItaSoftware.Puzzles.Chat.Commands
         /// </summary>
         /// <param name="cmdName">Command name</param>
         /// <returns>True if the command is binded to a command class, False otherwise.</returns>
-        public bool IsBound(string cmdName)
-        {
-            return _map.ContainsKey(cmdName);
-        }
+        public bool IsBound(string cmdName) => _map.ContainsKey(cmdName);
 
         /// <summary>
         /// Returns a Boolean value indicating whether provided arguments are valid for given <see cref="Command"/>.
@@ -42,7 +43,10 @@ namespace ItaSoftware.Puzzles.Chat.Commands
         internal bool AreArgumentsValid(string cmdName, string[] cmd_args)
         {
             if (!IsBound(cmdName))
+            {
                 return true;
+            }
+                
 
             Type cmdType = _map[cmdName];
 
@@ -51,7 +55,10 @@ namespace ItaSoftware.Puzzles.Chat.Commands
                 (CommandInfoAttribute) Attribute.GetCustomAttribute(cmdType, typeof(CommandInfoAttribute));
 
             if (commandInfo == null)
+            {
                 return true;
+            }
+                
 
             return (cmd_args.Length - 1) >= commandInfo.MinArgs;
         }
@@ -67,7 +74,9 @@ namespace ItaSoftware.Puzzles.Chat.Commands
 
             /* No type is bound for given command name */
             if (cmdType == null)
+            {
                 return null;
+            }
 
             var command = Activator.CreateInstance(cmdType, args) as ICommand;
 

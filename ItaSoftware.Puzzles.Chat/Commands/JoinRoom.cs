@@ -11,19 +11,27 @@
         public override IResult Handle()
         {
             if (hasInvalidArgsCount)
+            {
                 return Error("You need to specify a room to join.");
+            }
 
             if (!cmd_args[0].StartsWith("#"))
+            {
                 return Error("Invalid room name.");
+            }
 
             if (!HasContext && !HasUserContext)
+            {
                 return Ok();
-
+            }
             else if (HasContext && !context.IsUserLoggedIn(userCtx))
+            {
                 return Error("You must login first.");
-
+            }
             else if (!HasContext && HasUserContext)
+            {
                 return Error("You must login first.");
+            }
             else
             {
                 userCtx.JoinedRooms.Add(cmd_args[0]);

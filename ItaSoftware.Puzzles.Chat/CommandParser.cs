@@ -1,5 +1,4 @@
 ﻿using ItaSoftware.Puzzles.Chat.Commands;
-using System.Collections.Generic;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -19,7 +18,6 @@ namespace ItaSoftware.Puzzles.Chat
             ICommandArgs args = CommandArgs.Create(command, context, userCtx);
 
             return Execute(args);
-
         }
 
         public string Execute(ICommandArgs args)
