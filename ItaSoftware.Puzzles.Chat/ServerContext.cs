@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -22,7 +21,9 @@ namespace ItaSoftware.Puzzles.Chat
         internal bool IsUserLoggedIn(string user)
         {
             if (string.IsNullOrEmpty(user))
+            {
                 return false;
+            }
 
             return loggedUsers.Contains(new User(user));
         }
@@ -32,7 +33,9 @@ namespace ItaSoftware.Puzzles.Chat
             User user = FindByContext(ctx);
 
             if (user == null)
+            {
                 return false;
+            }
 
             return IsUserLoggedIn(user.Username);
         }
@@ -50,11 +53,15 @@ namespace ItaSoftware.Puzzles.Chat
         {
             /* No user is removed */
             if (string.IsNullOrEmpty(user))
+            {
                 return false;
+            }
 
             /* Remove user object */
             if (LoggedUserCount <= 0)
+            {
                 return false;
+            }
 
             loggedUsers.Remove(new User(user));
 
@@ -64,15 +71,21 @@ namespace ItaSoftware.Puzzles.Chat
         internal void SendMessage(string dstUser, string msg)
         {
             if (string.IsNullOrEmpty(dstUser))
+            {
                 return;
+            }
 
             if (string.IsNullOrEmpty(msg))
+            {
                 return;
+            }
 
             UserContext dstCtx = FindContextByName(dstUser);
 
             if (dstCtx == null)
+            {
                 return;
+            }
 
             dstCtx.Messages.Enqueue(string.Format("GOTROOMMSG {0} {1}", dstUser, msg));
         }
@@ -80,8 +93,12 @@ namespace ItaSoftware.Puzzles.Chat
         private UserContext FindContextByName(string dstUser)
         {
             foreach (User u in loggedUsers)
+            {
                 if (u.Username.Equals(dstUser))
+                {
                     return u.Context;
+                }
+            }
 
             return null;
         }
@@ -105,7 +122,9 @@ namespace ItaSoftware.Puzzles.Chat
             foreach (User user in loggedUsers)
             {
                 if (user.Username.Equals(ctx.Owner.Username))
+                {
                     return user;
+                }
             }
 
             return null;

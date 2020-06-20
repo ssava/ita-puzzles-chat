@@ -1,59 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 
 namespace ItaSoftware.Puzzles.Chat.Commands
 {
     internal class CommandFactory
     {
-        public static IDictionary<string, CommandInfo> Commands = new Dictionary<string, CommandInfo>
+        // MAP { "GOTROOMMSG", new CommandInfo(3, true) },
+        // MAP { "GOTUSERMSG", new CommandInfo(2, true) },
+
+        private static readonly CommandMapper Commands;
+        
+        static CommandFactory()
         {
-            { "LOGIN", new CommandInfo(1, false) },
-            { "JOIN", new CommandInfo (1, true) },
-            { "PART", new CommandInfo(1, true) },
-            { "MSG", new CommandInfo(2, true) },
-            { "GOTROOMMSG", new CommandInfo(3, true) },
-            { "GOTUSERMSG", new CommandInfo(2, true) },
-            { "LOGOUT", new CommandInfo(0, true) }
-        };
+            Commands = new CommandMapper();
+
+            Commands.Bind<UserLogin>("LOGIN");
+            Commands.Bind<JoinRoom>("JOIN");
+            Commands.Bind<LeaveRoom>("PART");
+            Commands.Bind<SendMessage>("MSG");
+            Commands.Bind<UserLogout>("LOGOUT");
+        }
 
         public static ICommand Create(ICommandArgs args)
         {
             bool hasInvalidArgsCount = false;
-            string cmd_name = string.Empty;
+            string cmdName = string.Empty;
+
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
 
             /* Retrieve command name */
             if (args != null)
-                cmd_name = args.FullCommand.Split(' ')[0];
+            {
+                cmdName = args.FullCommand.Split(' ')[0];
+            }
 
             /* Check if a command is supported */
-            if (!Commands.Keys.Contains(cmd_name))
+            if (!Commands.IsBound(cmdName))
+            {
                 throw new CommandParseException(new Result("ERROR Unsupported command"));
-
+            }
 
             /* Split whole command line */
             string[] cmd_args = args.FullCommand.Split(' ');
 
             /* Check for correct arguments */
-            if ((cmd_args.Length - 1) < Commands[cmd_name].MinArgs)
-                hasInvalidArgsCount = true;
-            else
-                cmd_args = cmd_args.Skip(1).ToArray();
-
-            switch (cmd_name)
+            if (!Commands.AreArgumentsValid(cmdName, cmd_args))
             {
-                case "LOGIN":
-                    return new UserLoginCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
-                case "JOIN":
-                    return new UserJoinCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
-                case "PART":
-                    return new UserPartCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
-                case "MSG":
-                    return new UserMessageCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
-                case "LOGOUT":
-                    return new UserLogoutCommand(args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
+                hasInvalidArgsCount = true;
+            }
+            else
+            {
+                cmd_args = cmd_args.Skip(1).ToArray();
             }
 
-            return null;
+            return Commands.Build(cmdName, args.Context, args.UserContext, cmd_args, hasInvalidArgsCount);
         }
     }
 }
