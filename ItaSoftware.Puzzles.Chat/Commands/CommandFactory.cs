@@ -28,14 +28,11 @@ namespace ItaSoftware.Puzzles.Chat.Commands
 
             if (args == null)
             {
-                throw new ArgumentNullException("args");
+                throw new CommandParseException(new Result("ERROR Unsupported command"));
             }
 
             /* Retrieve command name */
-            if (args != null)
-            {
-                cmdName = args.FullCommand.Split(' ')[0];
-            }
+            cmdName = args.FullCommand.Split(' ')[0];
 
             /* Check if a command is supported */
             if (!Commands.IsBound(cmdName))

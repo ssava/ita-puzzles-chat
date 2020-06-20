@@ -1,5 +1,10 @@
 ﻿namespace ItaSoftware.Puzzles.Chat.Commands
 {
+    public interface ICommand
+    {
+        IResult Handle();
+    }
+
     public abstract class Command : ICommand
     {
         protected ServerContext context;

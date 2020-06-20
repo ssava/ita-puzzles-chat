@@ -367,7 +367,7 @@ namespace ItaSoftware.Puzzles.Chat.Tests
 
             output = parser.Execute("MSG bob hello, bob.\r\n", context, aliceCtx);
             Assert.AreEqual("OK\r\n", output);
-            Assert.AreEqual(1, bobCtx.Messages);
+            Assert.AreEqual(1, bobCtx.Messages.Count);
             Assert.AreEqual("GOTUSERMSG alice hello, bob", bobCtx.Messages.Peek());
         }
 
