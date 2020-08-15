@@ -19,19 +19,29 @@
 
         public string Response
         {
-            get
-            {
-                return _resp;
-            }
+            get => _resp;
             set
             {
                 if (value.EndsWith(CommandArgs.CRLF))
+                {
                     _resp = value;
-                else
-                    _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
+                    return;
+                }
+
+                _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
             }
         }
         public T Data { get; set; }
+
+        public Result() : this(string.Empty) { }
+
+        public Result(string rsp) : this(rsp, null) { }
+
+        public Result(string rsp, T data)
+        {
+            Response = rsp;
+            Data = data;
+        }
     }
 
     public sealed class Result : IResult
@@ -42,32 +52,25 @@
 
         public string Response
         {
-            get
-            {
-                return _resp;
-            }
+            get => _resp;
             set
             {
                 if (value.EndsWith(CommandArgs.CRLF))
+                {
                     _resp = value;
-                else
-                    _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
+                    return;
+                }
+
+                _resp = string.Format("{0}{1}", value, CommandArgs.CRLF);
             }
         }
         public object Data { get; set; }
 
-        public Result()
-        {
-            Response = string.Empty;
-            Data = null;
-        }
+        public Result() : this(string.Empty) { }
 
-        public Result(string rsp) : this()
-        {
-            Response = rsp;
-        }
+        public Result(string rsp) : this(rsp, null) { }
 
-        public Result(string rsp, object data) : this(rsp)
+        public Result(string rsp, object data)
         {
             Response = rsp;
             Data = data;
