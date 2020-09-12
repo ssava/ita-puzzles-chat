@@ -12,7 +12,7 @@ namespace ItaSoftware.Puzzles.Chat
         //    { "GOTROOMMSG", new CommandInfo(3, true) }
         //};
 
-        public string Execute(string command, ServerContext context = null, UserContext userCtx = null)
+        public string ReplyFor(string command, ServerContext context = null, UserContext userCtx = null)
         {
             /* Create command arguments */
             ICommandArgs args = CommandArgs.Create(command, context, userCtx);
