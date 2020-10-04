@@ -10,14 +10,12 @@
 
         public override IResult Handle()
         {
-            string room_name = string.Empty;
-
             if (hasInvalidArgsCount)
             {
                 return Error("You need to specify a room to part.");
             }
 
-            room_name = cmd_args[0];
+            string room_name = cmd_args[0];
 
             if (!cmd_args[0].StartsWith("#"))
             {

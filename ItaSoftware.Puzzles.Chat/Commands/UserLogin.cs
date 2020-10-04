@@ -1,4 +1,6 @@
-﻿namespace ItaSoftware.Puzzles.Chat.Commands
+﻿using ItaSoftware.Puzzles.Chat.Domain;
+
+namespace ItaSoftware.Puzzles.Chat.Commands
 {
     [CommandInfo(minArgs: 1)]
     internal class UserLogin : Command
@@ -19,12 +21,12 @@
 
             if (HasUserContext)
             {
-                if (context.IsUserLoggedIn(userCtx))
+                if (serverContext.IsUserLoggedIn(userCtx))
                 {
                     return Error("User already logged in.");
                 }
 
-                User user = context.AddUser(username);
+                IUser user = serverContext.AddUser(username);
 
                 if (HasUserContext)
                 {
@@ -33,12 +35,12 @@
             }
             else if (HasContext)
             {
-                if (context.IsUserLoggedIn(username))
+                if (serverContext.IsUserLoggedIn(username))
                 {
                     return Error("User already logged in.");
                 }
 
-                User user = context.AddUser(username);
+                IUser user = serverContext.AddUser(username);
 
                 if (HasUserContext)
                 {

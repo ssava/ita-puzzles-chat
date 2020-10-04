@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ItaSoftware.Puzzles.Chat.Domain;
+using System;
+using System.Collections.Generic;
 
 namespace ItaSoftware.Puzzles.Chat
 {
@@ -10,12 +12,12 @@ namespace ItaSoftware.Puzzles.Chat
             return new ServerContext();
         }
 
-        private readonly ISet<User> loggedUsers;
+        private readonly ISet<IUser> loggedUsers;
         public int LoggedUserCount => loggedUsers.Count;
 
         private ServerContext()
         {
-            loggedUsers = new SortedSet<User>();
+            loggedUsers = new SortedSet<IUser>();
         }
 
         internal bool IsUserLoggedIn(string user)
@@ -30,7 +32,7 @@ namespace ItaSoftware.Puzzles.Chat
 
         internal bool IsUserLoggedIn(UserContext ctx)
         {
-            User user = FindByContext(ctx);
+            IUser user = FindByContext(ctx);
 
             if (user == null)
             {
@@ -40,9 +42,9 @@ namespace ItaSoftware.Puzzles.Chat
             return IsUserLoggedIn(user.Username);
         }
 
-        internal User AddUser(string user)
+        internal IUser AddUser(string user)
         {
-            User newUser = new User(user);
+            IUser newUser = new User(user);
             
             loggedUsers.Add(newUser);
 
@@ -51,8 +53,13 @@ namespace ItaSoftware.Puzzles.Chat
 
         internal bool RemoveUser(string user)
         {
+            return RemoveUser(new User(user));
+        }
+
+        internal bool RemoveUser(IUser user)
+        {
             /* No user is removed */
-            if (string.IsNullOrEmpty(user))
+            if (user == null)
             {
                 return false;
             }
@@ -63,40 +70,31 @@ namespace ItaSoftware.Puzzles.Chat
                 return false;
             }
 
-            loggedUsers.Remove(new User(user));
+            loggedUsers.Remove(user);
 
             return true;
         }
 
-        internal void SendMessage(string dstUser, string msg)
+        internal IUser GetUser(string username)
         {
-            if (string.IsNullOrEmpty(dstUser))
+            if (string.IsNullOrEmpty(username))
             {
-                return;
+                return null;
             }
 
-            if (string.IsNullOrEmpty(msg))
-            {
-                return;
-            }
-
-            UserContext dstCtx = FindContextByName(dstUser);
-
-            if (dstCtx == null)
-            {
-                return;
-            }
-
-            dstCtx.Messages.Enqueue(string.Format("GOTROOMMSG {0} {1}", dstUser, msg));
+            return FindUserBy(username);
         }
 
-        private UserContext FindContextByName(string dstUser)
+        private IUser FindUserBy(string username)
         {
-            foreach (User u in loggedUsers)
+            if (!string.IsNullOrEmpty(username))
             {
-                if (u.Username.Equals(dstUser))
+                foreach(IUser user in loggedUsers)
                 {
-                    return u.Context;
+                    if (user.Username == username)
+                    {
+                        return user;
+                    }
                 }
             }
 
@@ -106,12 +104,12 @@ namespace ItaSoftware.Puzzles.Chat
         internal bool RemoveUser(UserContext ctx)
         {
             /* Find user by context */
-            User user = FindByContext(ctx);
+            IUser user = FindByContext(ctx);
 
             return RemoveUser(user.Username);
         }
 
-        private User FindByContext(UserContext ctx)
+        private IUser FindByContext(UserContext ctx)
         {
             if (ctx == null)
                 return null;
@@ -119,15 +117,8 @@ namespace ItaSoftware.Puzzles.Chat
             if (ctx.Owner == null)
                 return null;
 
-            foreach (User user in loggedUsers)
-            {
-                if (user.Username.Equals(ctx.Owner.Username))
-                {
-                    return user;
-                }
-            }
-
-            return null;
+            return FindUserBy(ctx.Owner.Username);
         }
     }
 }
+

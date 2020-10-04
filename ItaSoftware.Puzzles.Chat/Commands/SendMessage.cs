@@ -28,10 +28,14 @@
             /* Send message to user */
             if (!isDstRoom)
             {
-                if (!context.IsUserLoggedIn(dest))
+                if (!serverContext.IsUserLoggedIn(dest))
                     return Error($"User {dest} is currently not logged in.");
 
-                context.SendMessage(cmd_args[0], cmd_args[1]);
+                if (!serverContext.GetUser(cmd_args[0]).Send(cmd_args[1]))
+                {
+                    return Error(string.Format("Unable to send message to user {0}", cmd_args[0]));
+                }
+
                 return Ok();
             }
 

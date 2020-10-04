@@ -30,7 +30,7 @@ namespace ItaSoftware.Puzzles.Chat.Tests
         {
             ServerContext context = ServerContext.Create(); /* Create new server context */
             CommandParser parser = new CommandParser();
-            
+
             _ = parser.Execute("BADCOMMAND\r\n", context);
 
             Assert.AreEqual(0, context.LoggedUserCount);
@@ -283,7 +283,6 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             Assert.AreEqual("#hello2", rooms[1]);
         }
 
-
         [TestMethod]
         public void Server_responds_OK_to_MSG_command()
         {
@@ -370,7 +369,6 @@ namespace ItaSoftware.Puzzles.Chat.Tests
             Assert.AreEqual(1, bobCtx.Messages.Count);
             Assert.AreEqual("GOTUSERMSG alice hello, bob", bobCtx.Messages.Peek());
         }
-
 
         [TestMethod]
         public void Server_responds_OK_to_LOGOUT_command()

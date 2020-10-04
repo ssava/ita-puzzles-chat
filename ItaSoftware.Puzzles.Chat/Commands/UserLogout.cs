@@ -12,7 +12,7 @@
         {
             if (HasContext && HasUserContext)
             {
-                context.RemoveUser(userCtx);
+                serverContext.RemoveUser(userCtx);
             }
 
             return Ok();

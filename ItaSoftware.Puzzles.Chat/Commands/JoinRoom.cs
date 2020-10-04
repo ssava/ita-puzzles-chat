@@ -24,7 +24,7 @@
             {
                 return Ok();
             }
-            else if (HasContext && !context.IsUserLoggedIn(userCtx))
+            else if (HasContext && !serverContext.IsUserLoggedIn(userCtx))
             {
                 return Error("You must login first.");
             }
