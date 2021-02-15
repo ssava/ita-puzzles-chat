@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace ItaSoftware.Puzzles.Chat.Commands
 {
     [Serializable]
     internal class CommandParseException : Exception
     {
-        public Result Result { get; private set; }
+        public IResult Result { get; private set; }
         public bool HasInvalidArguments { get; private set; }
 
-        public CommandParseException()
-        {
-        }
+        public CommandParseException() : this(null) { }
 
-        public CommandParseException(Result result)
-        {
-            this.Result = result;
-            this.HasInvalidArguments = false;
-        }
+        public CommandParseException(IResult result) : this(result, false) { }
 
-        public CommandParseException(Result result, bool hasInvalidArgs)
-        {
-            this.Result = result;
-            this.HasInvalidArguments = hasInvalidArgs;
-        }
+        public CommandParseException(IResult result, bool hasInvalidArgs) =>
+            (Result, HasInvalidArguments) = (result, hasInvalidArgs);
     }
 }

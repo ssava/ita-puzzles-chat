@@ -10,11 +10,7 @@ namespace ItaSoftware.Puzzles.Chat
         public CommandInfoAttribute(ushort minArgs) : this(minArgs, false) { }
         public CommandInfoAttribute(bool isLoginRequired) : this(0, isLoginRequired) { }
 
-        public CommandInfoAttribute(ushort minArgs, bool isLoginRequired)
-        {
-            MinArgs = minArgs;
-            IsLoginRequired = isLoginRequired;
-        }
-
+        public CommandInfoAttribute(ushort minArgs, bool isLoginRequired) =>
+            (MinArgs, IsLoginRequired) = (minArgs, isLoginRequired);
     }
 }

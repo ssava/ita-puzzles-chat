@@ -25,7 +25,7 @@
 
         public abstract IResult Handle();
 
-        public virtual IResult Ok()
+        public static IResult Ok()
         {
             return new Result
             {
@@ -33,7 +33,7 @@
             };
         }
 
-        public virtual IResult Error(string reason)
+        public static IResult Error(string reason)
         {
             return new Result
             {

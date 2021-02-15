@@ -24,20 +24,18 @@ namespace ItaSoftware.Puzzles.Chat.Commands
         public static ICommand Create(ICommandArgs args)
         {
             bool hasInvalidArgsCount = false;
-            string cmdName = string.Empty;
-
             if (args == null)
             {
-                throw new CommandParseException(new Result("ERROR Unsupported command"));
+                throw new CommandParseException(Command.Error("Unsupported command"));
             }
 
             /* Retrieve command name */
-            cmdName = args.FullCommand.Split(' ')[0];
+            string cmdName = args.FullCommand.Split(' ')[0];
 
             /* Check if a command is supported */
             if (!Commands.IsBound(cmdName))
             {
-                throw new CommandParseException(new Result("ERROR Unsupported command"));
+                throw new CommandParseException(Command.Error("Unsupported command"));
             }
 
             /* Split whole command line */

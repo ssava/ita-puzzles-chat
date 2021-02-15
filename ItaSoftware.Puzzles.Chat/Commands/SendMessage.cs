@@ -29,7 +29,9 @@
             if (!isDstRoom)
             {
                 if (!context.IsUserLoggedIn(dest))
+                {
                     return Error($"User {dest} is currently not logged in.");
+                }
 
                 context.SendMessage(cmd_args[0], cmd_args[1]);
                 return Ok();

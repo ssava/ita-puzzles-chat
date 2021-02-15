@@ -7,14 +7,8 @@ namespace ItaSoftware.Puzzles.Chat
         public string Username { get; private set; }
         public UserContext Context { get; private set; }
 
-        public User(string user)
-        {
-            Username = user;
-            Context = new UserContext
-            {
-                Owner = this
-            };
-        }
+        public User(string user) =>
+            (Username, Context) = (user, new UserContext { Owner = this });
 
         public int CompareTo(object obj)
         {

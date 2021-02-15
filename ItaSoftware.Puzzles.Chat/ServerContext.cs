@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ItaSoftware.Puzzles.Chat
 {
     public sealed class ServerContext
     {
 
-        public static ServerContext Create()
-        {
-            return new ServerContext();
-        }
+        public static ServerContext Create() =>
+            new ServerContext();
 
         private readonly ISet<User> loggedUsers;
         public int LoggedUserCount => loggedUsers.Count;
 
-        private ServerContext()
-        {
+        private ServerContext() =>
             loggedUsers = new SortedSet<User>();
-        }
 
         internal bool IsUserLoggedIn(string user)
         {
@@ -32,12 +29,7 @@ namespace ItaSoftware.Puzzles.Chat
         {
             User user = FindByContext(ctx);
 
-            if (user == null)
-            {
-                return false;
-            }
-
-            return IsUserLoggedIn(user.Username);
+            return user != null && IsUserLoggedIn(user.Username);
         }
 
         internal User AddUser(string user)
@@ -49,16 +41,17 @@ namespace ItaSoftware.Puzzles.Chat
             return newUser;
         }
 
+        internal User AddUser(User user)
+        {
+            loggedUsers.Add(user);
+
+            return user;
+        }
+
         internal bool RemoveUser(string user)
         {
             /* No user is removed */
-            if (string.IsNullOrEmpty(user))
-            {
-                return false;
-            }
-
-            /* Remove user object */
-            if (LoggedUserCount <= 0)
+            if (string.IsNullOrEmpty(user) || LoggedUserCount <= 0)
             {
                 return false;
             }
@@ -70,64 +63,31 @@ namespace ItaSoftware.Puzzles.Chat
 
         internal void SendMessage(string dstUser, string msg)
         {
-            if (string.IsNullOrEmpty(dstUser))
+            if (string.IsNullOrEmpty(dstUser) || string.IsNullOrEmpty(msg))
             {
                 return;
             }
 
-            if (string.IsNullOrEmpty(msg))
-            {
-                return;
-            }
-
-            UserContext dstCtx = FindContextByName(dstUser);
-
-            if (dstCtx == null)
-            {
-                return;
-            }
-
-            dstCtx.Messages.Enqueue(string.Format("GOTROOMMSG {0} {1}", dstUser, msg));
+            FindContextByName(dstUser)?.Messages.Enqueue($"GOTROOMMSG {dstUser} {msg}");
         }
 
-        private UserContext FindContextByName(string dstUser)
-        {
-            foreach (User u in loggedUsers)
-            {
-                if (u.Username.Equals(dstUser))
-                {
-                    return u.Context;
-                }
-            }
+        private UserContext FindContextByName(string dstUser) =>
+            loggedUsers.Where(u => u.Username.Equals(dstUser))
+                       .Select(c => c.Context)
+                       .FirstOrDefault();
 
-            return null;
-        }
-
-        internal bool RemoveUser(UserContext ctx)
-        {
-            /* Find user by context */
-            User user = FindByContext(ctx);
-
-            return RemoveUser(user.Username);
-        }
+        internal bool RemoveUser(UserContext ctx) =>
+            RemoveUser(FindByContext(ctx)?.Username);
 
         private User FindByContext(UserContext ctx)
         {
-            if (ctx == null)
-                return null;
-
-            if (ctx.Owner == null)
-                return null;
-
-            foreach (User user in loggedUsers)
+            if (ctx == null || ctx.Owner == null)
             {
-                if (user.Username.Equals(ctx.Owner.Username))
-                {
-                    return user;
-                }
+                return null;
             }
 
-            return null;
+            return loggedUsers.Where(u => u.Username == ctx.Owner.Username)
+                              .FirstOrDefault();
         }
     }
 }
