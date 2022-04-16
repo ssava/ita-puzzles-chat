@@ -1,9 +1,10 @@
-# ITA Hiring Puzzles -  Simple standalone TCP-based chat server
+# ITA Hiring Puzzles 
+
+## Simple standalone TCP-based chat server
 
 From [Archive.org](https://web.archive.org/web/20111012115624/http://itasoftware.com/careers/work-at-ita/hiring-puzzles.html)
 
 ## Roll Your Own Chat Server
-
 
 Implement a simple standalone TCP-based chat server, using the following protocol:
 
