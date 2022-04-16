@@ -1,26 +1,23 @@
-﻿using System;
+﻿namespace ItaSoftware.Puzzles.Chat;
 
-namespace ItaSoftware.Puzzles.Chat
+public sealed class User : IComparable
 {
-    public sealed class User : IComparable
+    public string Username { get; private set; }
+    public UserContext Context { get; private set; }
+
+    public User(string user)
     {
-        public string Username { get; private set; }
-        public UserContext Context { get; private set; }
-
-        public User(string user)
+        Username = user;
+        Context = new UserContext
         {
-            Username = user;
-            Context = new UserContext
-            {
-                Owner = this
-            };
-        }
+            Owner = this
+        };
+    }
 
-        public int CompareTo(object obj)
-        {
-            User userObj = (User)obj;
+    public int CompareTo(object obj)
+    {
+        User userObj = (User)obj;
 
-            return Username.CompareTo(userObj.Username);
-        }
+        return Username.CompareTo(userObj.Username);
     }
 }

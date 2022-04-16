@@ -1,44 +1,43 @@
-﻿namespace ItaSoftware.Puzzles.Chat.Commands
+﻿namespace ItaSoftware.Puzzles.Chat.Commands;
+
+public interface ICommand
 {
-    public interface ICommand
+    IResult Handle();
+}
+
+public abstract class Command : ICommand
+{
+    protected ServerContext context;
+    protected UserContext userCtx;
+    protected string[] cmd_args;
+    protected bool hasInvalidArgsCount;
+
+    public bool HasContext { get => context != null; }
+    public bool HasUserContext { get => userCtx != null; }
+
+    protected Command(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
     {
-        IResult Handle();
+        this.context = context;
+        this.userCtx = userCtx;
+        this.cmd_args = cmd_args;
+        this.hasInvalidArgsCount = hasInvalidArgsCount;
     }
 
-    public abstract class Command : ICommand
+    public abstract IResult Handle();
+
+    public virtual IResult Ok()
     {
-        protected ServerContext context;
-        protected UserContext userCtx;
-        protected string[] cmd_args;
-        protected bool hasInvalidArgsCount;
-
-        public bool HasContext { get => context != null; }
-        public bool HasUserContext { get => userCtx != null; }
-
-        protected Command(ServerContext context, UserContext userCtx, string[] cmd_args, bool hasInvalidArgsCount)
+        return new Result
         {
-            this.context = context;
-            this.userCtx = userCtx;
-            this.cmd_args = cmd_args;
-            this.hasInvalidArgsCount = hasInvalidArgsCount;
-        }
+            Response = "OK"
+        };
+    }
 
-        public abstract IResult Handle();
-
-        public virtual IResult Ok()
+    public virtual IResult Error(string reason)
+    {
+        return new Result
         {
-            return new Result
-            {
-                Response = "OK"
-            };
-        }
-
-        public virtual IResult Error(string reason)
-        {
-            return new Result
-            {
-                Response = $"ERROR {reason}"
-            };
-        }
+            Response = $"ERROR {reason}"
+        };
     }
 }

@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace ItaSoftware.Puzzles.Chat;
 
-namespace ItaSoftware.Puzzles.Chat
+public sealed class UserContext : IComparable
 {
-    public sealed class UserContext : IComparable
+    public User Owner { get; set; }
+    public ISet<string> JoinedRooms { get; private set; }
+
+    public Queue<string> Messages { get; private set; }
+
+    public UserContext()
     {
-        public User Owner { get; set; }
-        public ISet<string> JoinedRooms { get; private set; }
+        JoinedRooms = new SortedSet<string>();
+        Messages = new Queue<string>();
+    }
 
-        public Queue<string> Messages { get; private set; }
+    public int CompareTo(object obj)
+    {
+        UserContext ctxObj = (UserContext)obj;
 
-        public UserContext()
-        {
-            JoinedRooms = new SortedSet<string>();
-            Messages = new Queue<string>();
-        }
-
-        public int CompareTo(object obj)
-        {
-            UserContext ctxObj = (UserContext)obj;
-
-            return Owner.CompareTo(ctxObj.Owner);
-        }
+        return Owner.CompareTo(ctxObj.Owner);
     }
 }
