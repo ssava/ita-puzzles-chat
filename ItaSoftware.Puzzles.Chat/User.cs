@@ -2,6 +2,9 @@
 
 public sealed class User : IComparable
 {
+    public static readonly User None
+        = new(string.Empty);
+
     public string Username { get; private set; }
     public UserContext Context { get; private set; }
 
@@ -14,8 +17,11 @@ public sealed class User : IComparable
         };
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
+        if (obj is null)
+            return -1;
+
         User userObj = (User)obj;
 
         return Username.CompareTo(userObj.Username);

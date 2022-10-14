@@ -11,10 +11,14 @@ public sealed class UserContext : IComparable
     {
         JoinedRooms = new SortedSet<string>();
         Messages = new Queue<string>();
+        Owner = User.None;
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
+        if (obj is null)
+            return -1;
+
         UserContext ctxObj = (UserContext)obj;
 
         return Owner.CompareTo(ctxObj.Owner);
